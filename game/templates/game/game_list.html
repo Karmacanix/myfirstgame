@@ -1,0 +1,99 @@
+{% extends "home/base.html" %}
+
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<style>
+  .p3 {
+    font-family: "Source Code Pro", monospace;
+    color: LawnGreen;
+  }
+</style>
+<body>
+  <div class="container my-5">
+    <div class="p-5 bg-body-tertiary rounded-3">
+      {% if messages %}
+        {% bootstrap_messages %}
+      {% endif %}
+      {% if user.is_authenticated %}
+        <h2>Games available</h2>
+        {% if game_list %}
+        <div class="container bg-black" style="border:1px solid LawnGreen;">
+          <div class="row border-bottom p-3" style="border:1px solid LawnGreen;">
+            <div class="col">
+              <h5 class="p3">Game</h5>
+            </div>
+            <div class="col">
+              <h5 class="p3">Size</h5>
+            </div>
+            <div class="col">
+              <h5 class="p3">Host</h5>
+            </div>
+            <div class="col">
+              <h5 class="p3">Created</h5>
+            </div>
+            <div class="col">
+              <h5 class="p3">Queue</h5>
+            </div>
+            <div class="col">
+              <h5 class="p3">Players</h5>
+            </div>
+            <div class="col">
+              <h5 class="p3">Join</h5>
+            </div>
+          </div>
+          {% for game in game_list %}
+          <div class="row border-bottom p-3" style="border:1px solid LawnGreen;">
+            <div class="col">
+              <p class="p3">{{ game.name }}</p>
+            </div>
+            <div class="col">
+              <p class="p3">{{ game.get_number_of_players_display }}</p>
+            </div>
+            <div class="col">
+              <p class="p3">{{ game.creator }}</p>
+            </div>
+            <div class="col">
+              <p class="p3">{{ game.created|time:'H:i:s' }}</p>
+            </div>
+            <div class="col">
+              <p class="p3">{{ game.created|timesince }}</p>
+            </div>
+            <div class="col">
+              <p class="p3">1 of {{ game.number_of_players }}</p>
+            </div>
+            <div class="col">
+              <p class="p3">
+                <button class="w3-btn w3-purple w3-small w3-padding-small w3-round-large w3-hover-green">
+                  <a href="#" class="nav-link px-2 text-white">Join Game - {{ game.id }}</a>
+                </button>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+          <p>No game data.</p>
+        {% endif %}
+        <br/>
+        <p class="w3-right">
+          <button class="w3-btn w3-purple w3-padding w3-round-large w3-hover-green">
+            <a href="{% url 'create_game' %}" class="nav-link px-2 text-white">
+              <i class="fa-solid fa-circle-plus"></i> 
+              New Game
+            </a>
+          </button>
+        </p>
+        <br/>
+      {% else %}  
+        <p>Please login to view games.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+{% endblock %}

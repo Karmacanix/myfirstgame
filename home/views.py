@@ -60,7 +60,7 @@ def signup(request):
         else:
             messages.error(request, "Invalid form.")
         
-        return HttpResponseRedirect(' ')
+        return HttpResponseRedirect('/')
 
     else:
         form = NewUserForm()
